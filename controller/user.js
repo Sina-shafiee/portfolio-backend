@@ -27,7 +27,7 @@ const login = asyncHandler(async (req, res) => {
   const token = jwtGenerator(user._id);
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    return res.status(200).json({ user, token });
+    return res.status(200).json({ data: user, token });
   }
   res.status(400);
   throw new Error('Wrong credential');
@@ -51,7 +51,7 @@ const register = asyncHandler(async (req, res) => {
   // generate new token
   const token = jwtGenerator(user._id);
 
-  res.status(200).json({ user, token });
+  res.status(200).json({ data: user, token });
 });
 
 /**
@@ -69,4 +69,25 @@ const getUser = asyncHandler(async (req, res) => {
   res.status(200).json({ user });
 });
 
-module.exports = { login, register, getUser };
+/**
+ * @desc login user
+ * @endpoint POST /api/auth/login
+ * @access Private
+ */
+const updateUser = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  const { name } = req.body;
+  const userID = _id.toString();
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userID,
+    { name },
+    {
+      new: true
+    }
+  ).select('-password');
+
+  res.status(200).json({ data: updatedUser });
+});
+
+module.exports = { login, register, getUser, updateUser };
