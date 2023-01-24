@@ -2,6 +2,7 @@ require('colors');
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 
 const errorHandler = require('./middleware/errorHandler');
 const customError = require('./utils/customError');
@@ -11,6 +12,7 @@ const projectRouter = require('./routes/project');
 const userRouter = require('./routes/user');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/projects', projectRouter);
