@@ -1,5 +1,6 @@
 const Project = require('../model/project');
 const asyncHandler = require('express-async-handler');
+const cloudinary = require('../utils/cloudinary');
 
 /**
  * @desc get all projects
@@ -18,13 +19,34 @@ const getProjects = asyncHandler(async (req, res) => {
  * @access Private
  */
 const addProject = asyncHandler(async (req, res) => {
-  const { title, bio, desc, image, technologies, isCompleted, tags } = req.body;
+  const {
+    title,
+    bio,
+    desc,
+    imageBlob,
+    technologies,
+    isCompleted,
+    tags,
+    links
+  } = req.body;
+
+  const uploadImageRes = await cloudinary.uploader.upload(imageBlob, {
+    height: 800,
+    width: 1300,
+    crop: 'fill'
+  });
+
+  const image = {
+    img_id: uploadImageRes.public_id,
+    img_url: uploadImageRes.secure_url
+  };
 
   const project = await Project.create({
     title,
     bio,
     desc,
     image,
+    links,
     technologies,
     tags,
     isCompleted

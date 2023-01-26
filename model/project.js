@@ -36,8 +36,7 @@ const projectSchema = mongoose.Schema(
             message: '{VALUE} is not supported'
           }
         }
-      ],
-      required: [true, 'Please provide technologies']
+      ]
     },
     image: {
       img_id: {
@@ -47,6 +46,16 @@ const projectSchema = mongoose.Schema(
       img_url: {
         type: String,
         required: [true, 'Please provide img_url']
+      }
+    },
+    links: {
+      github: {
+        type: String,
+        required: [true, 'Please provide repository link']
+      },
+      website: {
+        type: String,
+        required: [true, 'Please provide website link']
       }
     }
   },
