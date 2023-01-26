@@ -8,7 +8,9 @@ const cloudinary = require('../utils/cloudinary');
  * @access Public
  */
 const getProjects = asyncHandler(async (req, res) => {
-  const projects = await Project.find({}).select('title image technologies');
+  const projects = await Project.find({}).select(
+    'title image technologies tags'
+  );
 
   res.status(200).json({ projects });
 });
