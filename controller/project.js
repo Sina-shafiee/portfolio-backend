@@ -32,11 +32,7 @@ const addProject = asyncHandler(async (req, res) => {
     links
   } = req.body;
 
-  const uploadImageRes = await cloudinary.uploader.upload(imageBlob, {
-    height: 800,
-    width: 1300,
-    crop: 'fill'
-  });
+  const uploadImageRes = await cloudinary.uploader.upload(imageBlob);
 
   const image = {
     img_id: uploadImageRes.public_id,
